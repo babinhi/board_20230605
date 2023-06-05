@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="component/config :: config"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div th:replace="component/header :: header"></div>
+<div th:replace="component/nav :: nav"></div>
+<form action="/board/update" method="post">
+    <input type="hidden" name="id" th:value="${board.id}"> <br>
+    <input type="text" name="memberEmail" th:value="${board.board_writer}" placeholder="작성자" readonly> <br>
+    <input type="text" name="memberPassword" placeholder="비밀번호"> <br>
+    <input type="text" name="memberName" th:value="${board.board_title}" placeholder="제목"> <br>
+    <input type="date" name="memberBirth" th:value="${board.board_contents}" placeholder="내용"> <br>
+    <input type="button" value="수정" onclick="board_update()">
+</form>
+<div th:replace="component/footer :: footer"></div>
+</body>
+<script th:inline="javascript">
+    const board_update = () => {
+        // 수정을 하든 안하든 모든 정보는 가져가야한다
+        const passDB = [[${board.memberPassword}]];
+        const password = document.querySelector('input[name="board_pass"]').value;
+        const id = document.querySelector('input[name="id"]').value;
+        const writer = document.querySelector('input[name="board_writer"]').value;
+        const title = document.querySelector('input[name="board_title"]').value;
+        const contents = document.querySelector('input[name="board_contents"]').value;
+
+        if (passDB == password) {
+            axios({
+                method: "put",
+                url: "/board/" + id,
+                data: {
+                    id: id,
+                    board_writer: writer,
+                    memberPassword: password,
+                    board_title: title,
+                    board_contents: contents,
+
+                }
+            }).then(res => {
+                location.href = "/board/" + id;
+            }).catch(err => {
+                alert("게시글수정에 실패하였습니다");
+            })
+
+        } else {
+            alert("비밀번호가 일치하지 않습니다");
+        }
+
+    }
+</script>
+</html>
