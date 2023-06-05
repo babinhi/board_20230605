@@ -5,6 +5,7 @@ import com.example.board.entity.BoardEntity;
 import com.example.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(()-> new NoSuchElementException());
         return BoardDTO.toDTO(boardEntity);
     }
-
+    @Transactional
     public void updateHits(Long id) {
         boardRepository.updateHits(id);
     }
