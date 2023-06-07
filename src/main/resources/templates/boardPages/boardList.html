@@ -13,6 +13,7 @@
             <th>id</th>
             <th>제목</th>
             <th>작성자</th>
+            <th>작성일</th>
             <th>조회수</th>
 <!--            <th>상세조회</th>-->
 <!--            <th>수정하기</th>-->
@@ -22,12 +23,13 @@
             <td th:text="${board.id}"></td>
             <td><a th:href="@{|/board/${board.id}|}" th:text="${board.board_title}"></a></td>
             <td th:text="${board.board_writer}"></td>
+            <td th:text="*{#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
             <td th:text="${board.board_hits}"></td>
             <td>
 <!--                <button th:onclick="board_detail([[${board.id}]])">조회</button>-->
 <!--                <button onclick="board_detail(id)">조회</button>-->
             </td>
-<!--            <td>-->
+            <!--            <td>-->
 <!--                <button th:onclick="board_update([[${board.id}]])">수정</button>-->
 <!--            </td>-->
 <!--            <td>-->

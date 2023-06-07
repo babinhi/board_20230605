@@ -29,14 +29,18 @@
             <th>조회수</th>
             <td th:text="${board.board_hits}"></td>
         </tr>
+        <tr>
+            <th>작성일</th>
+            <td th:text="*{#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
         <tr th:if="${board.fileAttached == 1}">
             <th>이미지</th>
             <td th:each="fileName:${board.storedFileName}">
                 <img th:src="@{|/upload/${fileName}}" width="200" height="200" alt="">
             </td>
-
         </tr>
-    </table><br>
+    </table>
+    <br>
 
     <div class="btn btn-outline-light">
         <button onclick="board_list()">목록</button>
