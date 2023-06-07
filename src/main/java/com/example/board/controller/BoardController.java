@@ -58,4 +58,11 @@ public class BoardController {
         model.addAttribute("board", boardDTO);
         return "boardPages/boardDetail";
     }
+    @GetMapping("/detail/{id}")
+    public String detail(@RequestParam Long id, Model model){
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("board", boardDTO);
+        return "boardPages/boardDetail";
+    }
+
 }

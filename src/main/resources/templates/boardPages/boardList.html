@@ -14,9 +14,9 @@
             <th>제목</th>
             <th>작성자</th>
             <th>조회수</th>
-            <th>상세조회</th>
-            <th>수정하기</th>
-            <th>삭제하기</th>
+<!--            <th>상세조회</th>-->
+<!--            <th>수정하기</th>-->
+<!--            <th>삭제하기</th>-->
         </tr>
         <tr th:each="board:${boardList}">
             <td th:text="${board.id}"></td>
@@ -24,7 +24,8 @@
             <td th:text="${board.board_writer}"></td>
             <td th:text="${board.board_hits}"></td>
             <td>
-                <button th:onclick="board_datail([[${board.id}]])">조회</button>
+<!--                <button th:onclick="board_detail([[${board.id}]])">조회</button>-->
+                <button onclick="board_detail(id)">조회</button>
             </td>
 <!--            <td>-->
 <!--                <button th:onclick="board_update([[${board.id}]])">수정</button>-->
@@ -37,4 +38,21 @@
 </div>
 <div th:replace="component/footer :: footer"></div>
 </body>
+<script>
+    const board_detail = (id)=>{
+        axios({
+            method:"get",
+            url:"/board/detail/{id}"+id
+        }).then(res=>{
+            console.log("res",res);
+            location.href="/board/detail?id="+id;
+
+        }).catch(err=>{
+            alert("다시 시도해주세요");
+
+
+        })
+
+    }
+</script>
 </html>
