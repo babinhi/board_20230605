@@ -12,7 +12,7 @@
     <input type="text" placeholder="제목" class="form-control" name="board_title"><br>
     <input type="text" placeholder="비밀번호" class="form-control" name="board_pass"><br>
     <textarea placeholder="내용" name="board_contents" rows="10" cols="50" class="form-control"></textarea><br>
-    <input type="file" name="board_file" class="form-control"><br>
+    <input type="file" name="board_file" class="form-control" multiple><br>
     <input type="submit" value="작성하기">
 </form>
 <div th:replace="component/footer :: footer"></div>
