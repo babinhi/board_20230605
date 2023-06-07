@@ -41,11 +41,7 @@ public class BoardController {
         model.addAttribute("boardDTO", boardDTO);
         return "boardPages/boardUpdate";
     }
-    @PutMapping("/{id}")
-    public ResponseEntity update(@RequestBody BoardDTO boardDTO) {
-        boardService.update(boardDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model){
         boardService.updateHits(id);
@@ -58,11 +54,23 @@ public class BoardController {
         model.addAttribute("board", boardDTO);
         return "boardPages/boardDetail";
     }
-    @GetMapping("/detail/{id}")
-    public String detail(@RequestParam Long id, Model model){
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        boardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable Long id,Model model){
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
-        return "boardPages/boardDetail";
+        return "/boardPages/boardUpdate";
     }
+    @PutMapping("/{id}")
+    public ResponseEntity update(@RequestBody BoardDTO boardDTO) {
+        boardService.update(boardDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 }

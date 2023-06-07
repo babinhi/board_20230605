@@ -7,12 +7,17 @@
 <body>
 <div th:replace="component/header :: header"></div>
 <div th:replace="component/nav :: nav"></div>
+
 <form action="/board/update" method="post">
-    <input type="hidden" name="id" th:value="${board.id}"> <br>
-    <input type="text" name="board_writer" th:value="${board.board_writer}" placeholder="작성자" readonly> <br>
-    <input type="text" name="board_pass" placeholder="비밀번호"> <br>
-    <input type="text" name="board_title" th:value="${board.board_title}" placeholder="제목"> <br>
-    <input type="date" name="board_contents" th:value="${board.board_contents}" placeholder="내용"> <br>
+    <!--    <input type="hidden" name="id" th:value="${board.id}"> <br>-->
+    <input type="text" name="board_writer" th:value="${board.board_writer}" class="form-control" placeholder="작성자" readonly> <br>
+    <input type="text" name="board_title" th:value="${board.board_title}" class="form-control" placeholder="제목"> <br>
+    <textarea id="board-contents" name="boardContents" cols="30" rows="10" class="form-control" th:text="${board.board_contents}"
+              placeholder="내용"> ></textarea> <br>
+    <input type="hidden" name="id" th:value="${board.id}">
+    <input type="hidden" name="board_hits" th:value="${board.board_hits}">
+    <input type="hidden" name="board_pass" th:value="${board.board_pass}">
+
     <input type="button" value="수정" onclick="board_update()">
 </form>
 <div th:replace="component/footer :: footer"></div>
@@ -20,12 +25,12 @@
 <script th:inline="javascript">
     const board_update = () => {
         // 수정을 하든 안하든 모든 정보는 가져가야한다
-
-        const password = document.querySelector('input[name="board_pass"]').value;
         const id = document.querySelector('input[name="id"]').value;
+        const pass = document.querySelector('input[name="board_pass"]').value;
         const writer = document.querySelector('input[name="board_writer"]').value;
         const title = document.querySelector('input[name="board_title"]').value;
-        const contents = document.querySelector('input[name="board_contents"]').value;
+        const contents =document.querySelector("#board-contents").value;
+        const hits = document.querySelector('input[name="board_hits"]').value;
 
         axios({
             method: "put",
@@ -33,9 +38,10 @@
             data: {
                 id: id,
                 board_writer: writer,
-
                 board_title: title,
                 board_contents: contents,
+                board_hits: hits,
+                board_pass: pass
 
             }
         }).then(res => {
