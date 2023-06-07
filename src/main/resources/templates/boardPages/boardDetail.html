@@ -29,6 +29,13 @@
             <th>조회수</th>
             <td th:text="${board.board_hits}"></td>
         </tr>
+        <tr th:if="${board.fileAttached == 1}">
+            <th>이미지</th>
+            <td>
+                <img th:src="@{|/upload/${board.storedFileName}}" width="200" height="200" alt="">
+            </td>
+
+        </tr>
     </table><br>
 
     <div class="btn btn-outline-light">

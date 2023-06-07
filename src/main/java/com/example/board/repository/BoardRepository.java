@@ -13,9 +13,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     // 라는 형식 필요
     // jpql(java persistence query language): 필요한 쿼리문을 직접 적용하고자 할 때 사용
     @Modifying
-    @Query(value = "update board_table b set b.board_hits= board_hits+1 where b.id=:id", nativeQuery = true)
+//    @Query(value = "update board_table b set b.board_hits= board_hits+1 where b.id=:id", nativeQuery = true)
     // 네이티브 쿼리방식을 사용하고 싶을때(실제쿼리문을 네이티브쿼리라고함)
-//    @Query(value = "update BoardEntity b set b.board_hits=b.board_hits+1 where b.id=:id")
+    @Query(value = "update BoardEntity b set b.board_hits=b.board_hits+1 where b.id=:id")
     // 테이블이름X Entity이름을 적어야함 /반드시 약칭을 사용해야함 (b) 그 이후에 약칭을 넣어서 적어야한다
     void updateHits(@Param("id") Long id);
 

@@ -7,11 +7,12 @@
 <body>
 <div th:replace="component/header :: header"></div>
 <div th:replace="component/nav :: nav"></div>
-<form action="/board/save" method="post">
-    <input type="text" placeholder="작성자" name="board_writer"><br>
-    <input type="text" placeholder="제목" name="board_title"><br>
-    <input type="text" placeholder="비밀번호" name="board_pass"><br>
-    <textarea placeholder="내용" name="board_contents" rows="10" cols="50"></textarea>
+<form action="/board/save" method="post" enctype="multipart/form-data">
+    <input type="text" placeholder="작성자" class="form-control" name="board_writer"><br>
+    <input type="text" placeholder="제목" class="form-control" name="board_title"><br>
+    <input type="text" placeholder="비밀번호" class="form-control" name="board_pass"><br>
+    <textarea placeholder="내용" name="board_contents" rows="10" cols="50" class="form-control"></textarea><br>
+    <input type="file" name="board_file" class="form-control"><br>
     <input type="submit" value="작성하기">
 </form>
 <div th:replace="component/footer :: footer"></div>

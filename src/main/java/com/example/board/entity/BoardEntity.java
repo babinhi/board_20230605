@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -40,6 +42,11 @@ public class BoardEntity {
     @Column(updatable = false) // updateble에 false를 줘야 insert할때만 값(시간)이 주어짐
     private LocalDateTime createdAt;
 
+    @Column
+    private int fileAttached;
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
@@ -48,6 +55,7 @@ public class BoardEntity {
         boardEntity.setBoard_pass(boardDTO.getBoard_pass());
         boardEntity.setBoard_contents(boardDTO.getBoard_contents());
         boardEntity.setBoard_hits(0);
+        boardEntity.setFileAttached(0);
         return boardEntity;
 
     }
@@ -59,6 +67,19 @@ public class BoardEntity {
         boardEntity.setBoard_title(boardDTO.getBoard_title());
         boardEntity.setBoard_pass(boardDTO.getBoard_pass());
         boardEntity.setBoard_contents(boardDTO.getBoard_contents());
+        boardEntity.setBoard_hits(boardDTO.getBoard_hits());
+        return boardEntity;
+    }
+
+
+    public static BoardEntity toSaveEntityWithFile(BoardDTO boardDTO) {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoard_write(boardDTO.getBoard_writer());
+        boardEntity.setBoard_title(boardDTO.getBoard_title());
+        boardEntity.setBoard_pass(boardDTO.getBoard_pass());
+        boardEntity.setBoard_contents(boardDTO.getBoard_contents());
+        boardEntity.setBoard_hits(0);
+        boardEntity.setFileAttached(1);
         return boardEntity;
     }
 }
