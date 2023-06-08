@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "board_table")
 @ToString
 
-public class BoardEntity {
+public class BoardEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -38,15 +38,19 @@ public class BoardEntity {
     @Column
     private int board_hits;
 
-    @CreationTimestamp
-    @Column(updatable = false) // updateble에 false를 줘야 insert할때만 값(시간)이 주어짐
-    private LocalDateTime createdAt;
+//    @CreationTimestamp
+//    @Column(updatable = false) // updateble에 false를 줘야 insert할때만 값(시간)이 주어짐
+//    private LocalDateTime createdAt;
 
     @Column
     private int fileAttached;
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
+    //담기는 타입은 <자식엔티티>
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();

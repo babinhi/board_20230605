@@ -52,9 +52,37 @@
 
     </div>
 </div>
+<p>────────────────────────────────────────────────────────────────────────────────────────────────────────────────</p>
+<div class="container" id="comment-write" style="display: inline-block">
+    <input type="text" id="comment-writer" placeholder="작성자" style="display: inline-block">
+    <input type="text" id="comment-contents" placeholder="내용" style="display: inline-block">
+    <button onclick="comment_write()" style="display: inline-block">댓글작성</button>
+</div><br><br>
+
+<div class="container" id="comment-list">
+
+</div>
 <div th:replace="component/footer :: footer"></div>
 </body>
-<script>
+<script th:inline="javascript">
+    const comment_write = () => {
+        const writer = document.querySelector("#comment-writer").value;
+        const contents = document.querySelector("#comment-contents").value;
+        const boardId =[[${board.id}]];
+        axios({
+            method: "post",
+            url:"/comment/save",
+            data:{
+                comment_writer: writer,
+                comment_contents: contents,
+                board_id: boardId
+            }
+        }).then(res=>{
+            console.log("res", res);
+        }).catch(err=>{
+            console.log("err", err);
+        });
+    }
     const board_list = () => {
         location.href = "/board/";
 
@@ -63,7 +91,7 @@
         console.log("type", type);
         document.getElementById("pass-check").innerHTML = "<input type=\"text\" placeholder=\"password\" id=\"password\">" +
             "<button onclick=\"pass_check('" + type + "')\">확인</button>";
-    };
+    }
 
     // const board_delete = () => {
     //     document.getElementById("pass-check").innerHTML = "<input type=\"text\" placeholder=\"password\" id=\"password\">" +
