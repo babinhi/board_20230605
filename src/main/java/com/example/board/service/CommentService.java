@@ -32,7 +32,7 @@ public class CommentService {
         BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(()-> new NoSuchElementException());
 //        List<CommentEntity> commentEntityList = boardEntity.getCommentEntityList();
         // 2. select * from comment_table where board_id=?
-        List<CommentEntity> commentEntityList = commentRepository.findByBoardEntity(boardEntity);
+        List<CommentEntity> commentEntityList = commentRepository.findByBoardEntityOrderByIdDesc(boardEntity);
         List<CommentDTO> commentDTOList = new ArrayList<>();
         commentEntityList.forEach(comment ->{
             commentDTOList.add(CommentDTO.toDTO(comment));

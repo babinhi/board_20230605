@@ -31,7 +31,7 @@
         </tr>
         <tr>
             <th>작성일</th>
-            <td th:text="*{#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${board.createdAt}"></td>
         </tr>
         <tr th:if="${board.fileAttached == 1}">
             <th>이미지</th>
@@ -57,32 +57,77 @@
     <input type="text" id="comment-writer" placeholder="작성자" style="display: inline-block">
     <input type="text" id="comment-contents" placeholder="내용" style="display: inline-block">
     <button onclick="comment_write()" style="display: inline-block">댓글작성</button>
-</div><br><br>
-
+</div>
+<br><br>
 <div class="container" id="comment-list">
-
+    <div th:if="${commentList == null}">
+        <p>작성된 댓글이 없습니다</p>
+    </div>
+    <div th:unless="${commentList == null}">
+        <table class="table">
+            <tr>
+                <th>아이디</th>
+                <th>작성자</th>
+                <th>내용</th>
+                <th>작성일</th>
+            </tr>
+            <tr th:each="comment : ${commentList}">
+                <td th:text="${comment.id}"></td>
+                <td th:text="${comment.comment_writer}"></td>
+                <td th:text="${comment.comment_contents}"></td>
+                <td th:text="${comment.createdAt}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div th:replace="component/footer :: footer"></div>
 </body>
 <script th:inline="javascript">
+    const comment_list = (commentList) => {
+        console.log("댓글 목록 함수", commentList);
+        const resultArea = document.querySelector("#comment-list");
+        let output = "        <table class=\"table\">\n" +
+            "            <tr>\n" +
+            "                <th>id</th>\n" +
+            "                <th>writer</th>\n" +
+            "                <th>contents</th>\n" +
+            "                <th>date</th>\n" +
+            "            </tr>";
+        for (let i in commentList) {
+            output += "            <tr>\n" +
+                "                <td>" + commentList[i].id + "</td>\n" +
+                "                <td>" + commentList[i].comment_writer + "</td>\n" +
+                "                <td>" + commentList[i].comment_contents + "</td>\n" +
+                "                <td>" + commentList[i].createdAt + "</td>\n" +
+                "            </tr>";
+        }
+        output += "</table>";
+        resultArea.innerHTML = output;
+    }
+
     const comment_write = () => {
         const writer = document.querySelector("#comment-writer").value;
         const contents = document.querySelector("#comment-contents").value;
-        const boardId =[[${board.id}]];
+        const boardId = [[${board.id}]];
         axios({
             method: "post",
-            url:"/comment/save",
-            data:{
+            url: "/comment/save",
+            data: {
                 comment_writer: writer,
                 comment_contents: contents,
                 board_id: boardId
             }
-        }).then(res=>{
+        }).then(res => {
             console.log("res", res);
-        }).catch(err=>{
+            console.log("댓글 목록", res.data);
+            document.querySelector("#comment-writer").value = "";
+            document.querySelector("#comment-contents").value = "";
+            comment_list(res.data);
+        }).catch(err => {
             console.log("err", err);
         });
     }
+
     const board_list = () => {
         location.href = "/board/";
 

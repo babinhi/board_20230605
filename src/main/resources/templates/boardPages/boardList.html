@@ -23,7 +23,7 @@
             <td th:text="${board.id}"></td>
             <td><a th:href="@{|/board/${board.id}|}" th:text="${board.board_title}"></a></td>
             <td th:text="${board.board_writer}"></td>
-            <td th:text="*{#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${board.createdAt}"></td>
             <td th:text="${board.board_hits}"></td>
             <td>
 <!--                <button th:onclick="board_detail([[${board.id}]])">조회</button>-->

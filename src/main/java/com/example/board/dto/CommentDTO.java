@@ -1,6 +1,7 @@
 package com.example.board.dto;
 
 import com.example.board.entity.CommentEntity;
+import com.example.board.util.UtilClass;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,8 +17,8 @@ public class CommentDTO {
     private Long board_id;
     private String comment_writer;
     private String comment_contents;
-    private LocalDateTime createdAt;
-    private LocalDateTime updateAt;
+    private String createdAt;
+    private String updateAt;
 
 
     public static CommentDTO toDTO (CommentEntity commentEntity){
@@ -26,8 +27,8 @@ public class CommentDTO {
         commentDTO.setComment_writer(commentEntity.getComment_writer());
         commentDTO.setComment_contents(commentEntity.getComment_contents());
         commentDTO.setBoard_id(commentEntity.getBoardEntity().getId());
-        commentDTO.setCreatedAt(commentEntity.getCreatedAt());
-        commentDTO.setUpdateAt(commentEntity.getUpdateAt());
+        commentDTO.setCreatedAt(UtilClass.dateFormat(commentEntity.getCreatedAt()));
+        commentDTO.setUpdateAt(UtilClass.dateFormat(commentEntity.getUpdateAt()));
         return commentDTO;
 
     }
