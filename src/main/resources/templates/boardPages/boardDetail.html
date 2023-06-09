@@ -88,7 +88,7 @@
         const resultArea = document.querySelector("#comment-list");
         let output = "        <table class=\"table\">\n" +
             "            <tr>\n" +
-            // "                <th>id</th>\n" +
+            "                <th>id</th>\n" +
             "                <th>writer</th>\n" +
             "                <th>contents</th>\n" +
             "                <th>date</th>\n" +
@@ -129,7 +129,9 @@
     }
 
     const board_list = () => {
-        location.href = "/board/";
+        // location.href = "/board/";
+        const page = [[${page}]];
+        location.href="/board?page="+page;
 
     }
     const board = (type) => {

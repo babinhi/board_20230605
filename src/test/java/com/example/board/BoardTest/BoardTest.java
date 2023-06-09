@@ -113,5 +113,60 @@ public class BoardTest {
 
 
     }
+
+    @Test
+    @DisplayName("검색기능테스트")
+    public void searchTest(){
+//        List<BoardEntity> boardEntityList = boardRepository.findByBoardTitleContaining("2");
+        String q ="30";
+        List<BoardEntity> boardEntityList = boardRepository.findByBoardTitleContainingOrBoardWriterContaining(q,q);
+
+        boardEntityList.forEach(boardEntity -> {
+            System.out.println(BoardDTO.toDTO(boardEntity));
+        });
+
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("검색기능테스트")
+    public void search(){
+        List<BoardEntity> boardEntityList = boardRepository.findByBoardWriterContainingOrderByIdDesc("5");
+        boardEntityList.forEach(boardEntity -> {
+            System.out.println(BoardDTO.toDTO(boardEntity));
+        });
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("검색 결과 페이징")
+    public void searchPaging(){
+        String q = "2";
+        int page = 0;
+        int pageLimit=3;
+
+        Page<BoardEntity> boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.Direction.DESC, "id"));
+        Page<BoardDTO> boardList = boardEntities.map(boardEntity ->
+                BoardDTO.builder()
+                        .id(boardEntity.getId())
+                        .boardTitle(boardEntity.getBoardTitle())
+                        .boardWriter(boardEntity.getBoardWriter())
+                        .createdAt(UtilClass.dateFormat(boardEntity.getCreatedAt()))
+                        .boardHits(boardEntity.getBoardHits())
+                        .build()
+        );
+        System.out.println("boardEntities.getContent() = " + boardList.getContent()); // 요청페이지(해당페이지)에 들어있는 데이터
+        System.out.println("boardEntities.getTotalElements() = " + boardList.getTotalElements()); // (현 테이블에 있는) 전체 글갯수
+        System.out.println("boardEntities.getNumber() = " + boardList.getNumber()); // 요청페이지(jpa 기준)
+        System.out.println("boardEntities.getTotalPages() = " + boardList.getTotalPages()); // 전체 페이지 갯수
+        System.out.println("boardEntities.getSize() = " + boardList.getSize()); // 한페이지에 보여지는 글갯수
+        System.out.println("boardEntities.hasPrevious() = " + boardList.hasPrevious()); // 이전페이지 존재 여부 (첫 페이지를 보려면 0으로 처리해야함)
+        System.out.println("boardEntities.isFirst() = " + boardList.isFirst()); // 첫페이지인지 여부
+        System.out.println("boardEntities.isLast() = " + boardList.isLast()); // 마지막페이지인지 여부
+
+
+    }
+
+
 }
 

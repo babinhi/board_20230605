@@ -41,7 +41,7 @@ public class BoardService {
             BoardEntity boardEntity = BoardEntity.toSaveEntityWithFile(boardDTO);
             BoardEntity savedEntity = boardRepository.save(boardEntity);
             // 2. 파일이름 꺼내고, 저장용 이름 만들고 파일 로컬에 저장
-            for (MultipartFile boardFile: boardDTO.getBoardFile()) {
+            for (MultipartFile boardFile : boardDTO.getBoardFile()) {
                 String originalFileName = boardFile.getOriginalFilename();
                 String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
                 String savePath = "D:\\springboot_img\\" + storedFileName;
@@ -55,6 +55,7 @@ public class BoardService {
             return savedEntity.getId();
         }
     }
+
 
     @Transactional
     public List<BoardDTO> findAll() {

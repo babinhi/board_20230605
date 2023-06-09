@@ -1,6 +1,10 @@
 package com.example.board.entity;
 
 import com.example.board.dto.BoardDTO;
+import com.example.board.entity.BaseEntity;
+import com.example.board.entity.BoardFileEntity;
+import com.example.board.entity.CommentEntity;
+import com.example.board.dto.BoardDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,17 +15,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
-@Setter
-@Getter
 @Table(name = "board_table")
-//@ToString
+@Getter
+@Setter
+public class BoardEntity extends BaseEntity {
 
-public class BoardEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column(length = 20, nullable = false)
     private String boardWriter;
@@ -39,7 +41,7 @@ public class BoardEntity extends BaseEntity{
     private int boardHits;
 
 //    @CreationTimestamp
-//    @Column(updatable = false) // updateble에 false를 줘야 insert할때만 값(시간)이 주어짐
+//    @Column(updatable = false)
 //    private LocalDateTime createdAt;
 
     @Column
@@ -50,7 +52,6 @@ public class BoardEntity extends BaseEntity{
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntityList = new ArrayList<>();
-    //담기는 타입은 <자식엔티티>
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();

@@ -27,9 +27,10 @@ public class BoardController {
     private final CommentService commentService;
 
     @GetMapping("/save")
-    public String saveForm(){
+    public String saveForm() {
         return "boardPages/boardSave";
     }
+
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         boardService.save(boardDTO);
@@ -50,9 +51,10 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model){
+    public String findById(@PathVariable Long id, @RequestParam("page") int page, Model model){
         boardService.updateHits(id);
 //        BoardDTO boardDTO = null;
+        model.addAttribute("page", page);
         try {
             BoardDTO boardDTO = boardService.findById(id);
             model.addAttribute("board", boardDTO);
@@ -76,7 +78,7 @@ public class BoardController {
     public String updateForm(@PathVariable Long id,Model model){
         BoardDTO boardDTO = boardService.findById(id);
         model.addAttribute("board", boardDTO);
-        return "/boardPages/boardUpdate";
+        return "boardPages/boardUpdate";
     }
     @PutMapping("/{id}")
     public ResponseEntity update(@RequestBody BoardDTO boardDTO) {
