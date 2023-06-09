@@ -101,6 +101,12 @@ ul, ol, li {
     padding: 0;
 }
 
+#nav ul li.menuSearch{
+    padding: 15px;
+    float: right;
+
+}
+
 ul.myMenu {
 }
 
