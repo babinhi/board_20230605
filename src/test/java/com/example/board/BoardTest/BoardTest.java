@@ -97,7 +97,7 @@ public class BoardTest {
                 BoardDTO.builder()
                         .id(boardEntity.getId())
                         .boardTitle(boardEntity.getBoardTitle())
-                        .boardWriter(boardEntity.getBoardWrite())
+                        .boardWriter(boardEntity.getBoardWriter())
                         .createdAt(UtilClass.dateFormat(boardEntity.getCreatedAt()))
                         .boardHits(boardEntity.getBoardHits())
                         .build()
