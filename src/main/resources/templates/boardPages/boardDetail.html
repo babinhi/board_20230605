@@ -14,28 +14,28 @@
             <td th:text="${board.id}"></td>
         </tr>
         <tr>
-            <th>제목</th>
-            <td th:text="${board.board_title}"></td>
+            <th>title</th>
+            <td th:text="${board.boardTitle}"></td>
         </tr>
         <tr>
-            <th>작성자</th>
-            <td th:text="${board.board_writer}"></td>
+            <th>writer</th>
+            <td th:text="${board.boardWriter}"></td>
         </tr>
         <tr>
-            <th>내용</th>
-            <td th:text="${board.board_contents}"></td>
-        </tr>
-        <tr>
-            <th>조회수</th>
-            <td th:text="${board.board_hits}"></td>
-        </tr>
-        <tr>
-            <th>작성일</th>
+            <th>date</th>
             <td th:text="${board.createdAt}"></td>
         </tr>
+        <tr>
+            <th>hits</th>
+            <td th:text="${board.boardHits}"></td>
+        </tr>
+        <tr>
+            <th>contents</th>
+            <td th:text="${board.boardContents}"></td>
+        </tr>
         <tr th:if="${board.fileAttached == 1}">
-            <th>이미지</th>
-            <td th:each="fileName:${board.storedFileName}">
+            <th>image</th>
+            <td th:each="fileName: ${board.storedFileName}">
                 <img th:src="@{|/upload/${fileName}}" width="200" height="200" alt="">
             </td>
         </tr>
@@ -66,15 +66,15 @@
     <div th:unless="${commentList == null}">
         <table class="table">
             <tr>
-                <th>아이디</th>
-                <th>작성자</th>
-                <th>내용</th>
-                <th>작성일</th>
+                <th>id</th>
+                <th>writer</th>
+                <th>contents</th>
+                <th>date</th>
             </tr>
-            <tr th:each="comment : ${commentList}">
+            <tr th:each="comment: ${commentList}">
                 <td th:text="${comment.id}"></td>
-                <td th:text="${comment.comment_writer}"></td>
-                <td th:text="${comment.comment_contents}"></td>
+                <td th:text="${comment.commentWriter}"></td>
+                <td th:text="${comment.commentContents}"></td>
                 <td th:text="${comment.createdAt}"></td>
             </tr>
         </table>
@@ -88,16 +88,16 @@
         const resultArea = document.querySelector("#comment-list");
         let output = "        <table class=\"table\">\n" +
             "            <tr>\n" +
-            "                <th>id</th>\n" +
+            // "                <th>id</th>\n" +
             "                <th>writer</th>\n" +
             "                <th>contents</th>\n" +
             "                <th>date</th>\n" +
             "            </tr>";
         for (let i in commentList) {
-            output += "            <tr>\n" +
+            output += "<tr>\n" +
                 "                <td>" + commentList[i].id + "</td>\n" +
-                "                <td>" + commentList[i].comment_writer + "</td>\n" +
-                "                <td>" + commentList[i].comment_contents + "</td>\n" +
+                "                <td>" + commentList[i].commentWriter + "</td>\n" +
+                "                <td>" + commentList[i].commentContents + "</td>\n" +
                 "                <td>" + commentList[i].createdAt + "</td>\n" +
                 "            </tr>";
         }
@@ -113,9 +113,9 @@
             method: "post",
             url: "/comment/save",
             data: {
-                comment_writer: writer,
-                comment_contents: contents,
-                board_id: boardId
+                commentWriter: writer,
+                commentContents: contents,
+                boardId: boardId
             }
         }).then(res => {
             console.log("res", res);
@@ -144,33 +144,42 @@
     // };
 
     const pass_check = (type) => {
-        console.log("type", type);
+        console.log("pass_check type 변수 값", type);
         const password = document.getElementById("password").value;
-        const passDB = [[${board.board_pass}]];
+        const passDB = [[${board.boardPass}]];
         const id = [[${board.id}]];
         if (password == passDB) {
             if (type == "update") {
                 location.href = "/board/update/" + id;
             } else if (type == "delete") {
-                // location.href = "/board/delete/" + id;
+                // location.href = "/board/delete/"+id;
                 axios({
                     method: "delete",
                     url: "/board/" + id
                 }).then(res => {
                     location.href = "/board/";
                 }).catch(err => {
-                    alert("삭제에 실패하셨습니다");
-                })
-            } else {
-                alert("비밀번호를 확인해주세요");
+                    alert("삭제 실패!!");
+                });
             }
         } else {
-            alert("비밀번호를 확인해주세요");
+            alert("비밀번호 불일치!!");
         }
     }
+
     // const delete_pass_check = () => {
     //     const password = document.getElementById("password").value;
-    //     const passDB = [[${board.board_pass}]];
+    //     const passDB = [[${board.boardPass}]];
+    //     const id = [[${board.id}]];
+    //     if (password == passDB) {
+    //
+    //     } else {
+    //         alert("비밀번호 불일치!!");
+    //     }
+    // }
+    // const delete_pass_check = () => {
+    //     const password = document.getElementById("password").value;
+    //     const passDB = [[${board.boardPass}]];
     //     const id = [[${board.id}]];
     //     if(password==passDB){
     //         location.href="/board/delete/"+id;

@@ -26,12 +26,10 @@ public class CommentController {
         System.out.println("commentDTO = " + commentDTO);
         try {
             commentService.save(commentDTO);
-            List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoard_id());
+            List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
             return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
-
 }
