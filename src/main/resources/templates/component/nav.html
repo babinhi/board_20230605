@@ -28,9 +28,20 @@
       <a href="/board/">글목록</a>
     </li>
     <li class="menuSearch">
+      <select name="type" id="type">
+        <option value="writer">작성자</option>
+        <option value="title">제목</option>
+      </select>
       <input type="text" placeholder="검색" id="q" style="display: inline-block;">
       <i class="bi bi-search" onclick="search_func()"></i>
     </li>
+    <script>
+      const search_func = ()=>{
+        const type = document.querySelector("#type").value;
+        const q = document.querySelector("#q").value;
+        location.href="/board?type=" + type +"&q="+q;
+      }
+    </script>
 <!--    <li>-->
 <!--      <a href="/member/">회원목록</a>-->
 <!--    </li>-->

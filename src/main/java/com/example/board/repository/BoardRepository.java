@@ -26,13 +26,13 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     // select * from board_table where board_title like %q%
     List<BoardEntity> findByBoardTitleContaining(String q);
     List<BoardEntity> findByBoardWriterContainingOrderByIdDesc(String q);
-
     //작성자 또는 제목에 검색어가 포함된 결과 조회
     // select * from board_table where board_title like '%q%' or board_writer like '%q%'
 
     List<BoardEntity> findByBoardTitleContainingOrBoardWriterContaining(String q, String q2);
 
     // 작성자로 검색한 결과 페이징
+    Page<BoardEntity> findByBoardWriterContaining(String q, Pageable pageable);
     Page<BoardEntity> findByBoardTitleContaining(String q, Pageable pageable);
 
 

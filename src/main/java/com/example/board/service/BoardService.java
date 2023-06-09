@@ -90,14 +90,23 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    public Page<BoardDTO> paging(Pageable pageable) {
+    public Page<BoardDTO> paging(Pageable pageable, String type, String q) {
         int page = pageable.getPageNumber()-1;
         int pageLimit = 5;
 
         //page는 몇페이지를 볼거냐
         //pageLimit는 몇개 글씩 볼거냐
         //Sort.by(Sort.Direction.DESC,"id")는 id를 기준으로 내림차순 정렬 하겠다
-        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+//        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        Page<BoardEntity> boardEntities = null;
+        if (type.equals("title")) {
+            boardEntities = boardRepository.findByBoardTitleContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        } else if (type.equals("writer")) {
+            boardEntities = boardRepository.findByBoardWriterContaining(q, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        } else {
+            boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        }
+
         Page<BoardDTO> boardDTOS = boardEntities.map(boardEntity -> BoardDTO.builder()
                 .id(boardEntity.getId())
                 .boardTitle(boardEntity.getBoardTitle())

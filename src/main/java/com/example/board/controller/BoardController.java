@@ -51,10 +51,14 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, @RequestParam("page") int page, Model model){
+    public String findById(@PathVariable Long id, @RequestParam("page") int page,
+                           @RequestParam("type") String type,
+                           @RequestParam("q") String q,
+                           Model model) {
         boardService.updateHits(id);
-//        BoardDTO boardDTO = null;
         model.addAttribute("page", page);
+        model.addAttribute("type", type);
+        model.addAttribute("q", q);
         try {
             BoardDTO boardDTO = boardService.findById(id);
             model.addAttribute("board", boardDTO);
@@ -88,10 +92,13 @@ public class BoardController {
 
     // /board?page=1
     @GetMapping
-    public String paging (@PageableDefault(page =1)Pageable pageable, Model model){
+    public String paging(@PageableDefault(page = 1) Pageable pageable,
+                         @RequestParam(value = "type", required = false, defaultValue = "") String type,
+                         @RequestParam(value = "q", required = false, defaultValue = "") String q,
+                         Model model) {
         System.out.println("pageable = " + pageable.getPageNumber());
 //        System.out.println(pageable.getPageNumber());
-        Page<BoardDTO> boardDTOS = boardService.paging(pageable);
+        Page<BoardDTO> boardDTOS = boardService.paging(pageable, type, q);
         model.addAttribute("boardList", boardDTOS);
         // 시작페이지(startPage), 마지막페이지(endPage)값 계산
         // 하단에 보여줄 페이지 갯수 3개
@@ -106,6 +113,8 @@ public class BoardController {
 //        }
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("type", type);
+        model.addAttribute("q", q);
         return "boardPages/boardPaging";
     }
 
